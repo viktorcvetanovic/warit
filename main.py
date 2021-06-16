@@ -11,7 +11,7 @@ icon = pygame.image.load("assets/icon.png")
 clock = pygame.time.Clock()
 pygame.display.update()
 pygame.display.set_icon(icon)
-
+font = pygame.font.Font("freesansbold.ttf", 26)
 #################################
 # player images of different position
 player_right_image = [pygame.image.load("assets/tile008.png"),
@@ -32,6 +32,7 @@ player_is_jumping = [pygame.image.load("assets/tile012.png"),
                      pygame.image.load("assets/tile015.png")]
 # speed and position of player
 speed = 8
+score=0
 playerX = 370
 playerY = 400
 # all possible direction for player :)
@@ -74,6 +75,7 @@ def move_player():
 
 def change_direction(event_value):
     global direction
+    global score
     if event_value == pygame.K_LEFT:
         direction = listOfDirection[0]
     elif event_value == pygame.K_RIGHT:
@@ -82,6 +84,11 @@ def change_direction(event_value):
         direction = listOfDirection[2]
     elif event_value == pygame.K_DOWN:
         direction = listOfDirection[3]
+
+
+def render_score():
+    text = font.render("Score:"+str(score), True, (0, 0, 0))
+    screen.blit(text, (10, 10))
 
 
 isRunning = True
@@ -96,5 +103,6 @@ while isRunning:
             direction = 0
     move_player()
     screen.fill(screen_color)
+    render_score()
     draw_player(playerX, playerY, direction)
     pygame.display.update()

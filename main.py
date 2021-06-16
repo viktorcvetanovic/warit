@@ -105,25 +105,25 @@ listOfDirection = [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN]
 # default is moving right
 direction = listOfDirection[0]
 enemy_direction = listOfDirection[random.randint(0, 3)]
-walkCount = 0
+walk_count = 0
 
 
 def draw_player_or_enemy(x, y, dire, array):
-    global walkCount
-    if walkCount >= 32:
-        walkCount = 0
+    global walk_count
+    if walk_count >= 32:
+        walk_count = 0
     if dire == pygame.K_RIGHT:
-        screen.blit(array[1][walkCount // 8], (x, y))
-        walkCount += 1
+        screen.blit(array[1][walk_count // 8], (x, y))
+        walk_count += 1
     elif dire == pygame.K_LEFT:
-        screen.blit(array[2][walkCount // 8], (x, y))
-        walkCount += 1
+        screen.blit(array[2][walk_count // 8], (x, y))
+        walk_count += 1
     elif dire == pygame.K_UP:
-        screen.blit(array[4][walkCount // 8], (x, y))
-        walkCount += 1
+        screen.blit(array[4][walk_count // 8], (x, y))
+        walk_count += 1
     else:
-        screen.blit(array[3][walkCount // 8], (x, y))
-        walkCount += 1
+        screen.blit(array[3][walk_count // 8], (x, y))
+        walk_count += 1
 
 
 def throw_spell(dire, x, y):
@@ -190,12 +190,12 @@ def render_score():
     screen.blit(text, (10, 10))
 
 
-isRunning = True
-while isRunning:
+is_running = True
+while is_running:
     clock.tick(len(list_of_enemy_pos) * 3)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            isRunning = False
+            is_running = False
         if event.type == pygame.KEYDOWN:
             change_direction(event.key)
         else:
@@ -210,5 +210,5 @@ while isRunning:
                              list_of_enemy_pos[i]['class'])
         call_random(change_enemy_direction, i)
     if check_if_dead():
-        isRunning = False
+        is_running = False
     pygame.display.update()

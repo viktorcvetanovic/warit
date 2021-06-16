@@ -1,7 +1,6 @@
 import pygame
 
 pygame.init()
-
 # config for screen
 size = width, height = 800, 500
 screen_color = a, b, c = 255, 255, 255
@@ -14,27 +13,49 @@ pygame.display.set_icon(icon)
 font = pygame.font.Font("freesansbold.ttf", 26)
 #################################
 # player images of different position
-player_right_image = [pygame.image.load("assets/tile008.png"),
-                      pygame.image.load("assets/tile009.png"),
-                      pygame.image.load("assets/tile010.png"),
-                      pygame.image.load("assets/tile011.png")]
-player_left_image = [pygame.image.load("assets/tile004.png"),
-                     pygame.image.load("assets/tile005.png"),
-                     pygame.image.load("assets/tile006.png"),
-                     pygame.image.load("assets/tile007.png")]
-player_not_moving = [pygame.image.load("assets/tile000.png"),
-                     pygame.image.load("assets/tile001.png"),
-                     pygame.image.load("assets/tile002.png"),
-                     pygame.image.load("assets/tile003.png")]
-player_is_jumping = [pygame.image.load("assets/tile012.png"),
-                     pygame.image.load("assets/tile013.png"),
-                     pygame.image.load("assets/tile014.png"),
-                     pygame.image.load("assets/tile015.png")]
+player = {
+    1: [pygame.image.load("assets/tile008.png"),
+        pygame.image.load("assets/tile009.png"),
+        pygame.image.load("assets/tile010.png"),
+        pygame.image.load("assets/tile011.png")],
+    2: [pygame.image.load("assets/tile004.png"),
+        pygame.image.load("assets/tile005.png"),
+        pygame.image.load("assets/tile006.png"),
+        pygame.image.load("assets/tile007.png")],
+    3: [pygame.image.load("assets/tile000.png"),
+        pygame.image.load("assets/tile001.png"),
+        pygame.image.load("assets/tile002.png"),
+        pygame.image.load("assets/tile003.png")],
+    4: [pygame.image.load("assets/tile012.png"),
+        pygame.image.load("assets/tile013.png"),
+        pygame.image.load("assets/tile014.png"),
+        pygame.image.load("assets/tile015.png")]
+}
+enemy_one = {
+    1: [pygame.image.load("assets/enemy/tile008.png"),
+        pygame.image.load("assets/enemy/tile009.png"),
+        pygame.image.load("assets/enemy/tile010.png"),
+        pygame.image.load("assets/enemy/tile011.png")],
+    2: [pygame.image.load("assets/enemy/tile004.png"),
+        pygame.image.load("assets/enemy/tile005.png"),
+        pygame.image.load("assets/enemy/tile006.png"),
+        pygame.image.load("assets/enemy/tile007.png")],
+    3: [pygame.image.load("assets/enemy/tile000.png"),
+        pygame.image.load("assets/enemy/tile001.png"),
+        pygame.image.load("assets/enemy/tile002.png"),
+        pygame.image.load("assets/enemy/tile003.png")],
+    4: [pygame.image.load("assets/enemy/tile012.png"),
+        pygame.image.load("assets/enemy/tile013.png"),
+        pygame.image.load("assets/enemy/tile014.png"),
+        pygame.image.load("assets/enemy/tile015.png")]
+}
 # speed and position of player
 speed = 8
-score=0
+score = 0
 playerX = 370
 playerY = 400
+enemyX = 250
+enemyY = 250
 # all possible direction for player :)
 listOfDirection = [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN]
 # default is moving right
@@ -42,21 +63,21 @@ direction = listOfDirection[0]
 walkCount = 0
 
 
-def draw_player(x, y, dire):
+def draw_player_or_enemy(x, y, dire, array):
     global walkCount
     if walkCount >= 32:
         walkCount = 0
     if dire == pygame.K_RIGHT:
-        screen.blit(player_right_image[walkCount // 8], (x, y))
+        screen.blit(array[1][walkCount // 8], (x, y))
         walkCount += 2
     elif dire == pygame.K_LEFT:
-        screen.blit(player_left_image[walkCount // 8], (x, y))
+        screen.blit(array[2][walkCount // 8], (x, y))
         walkCount += 2
     elif dire == pygame.K_UP:
-        screen.blit(player_is_jumping[walkCount // 8], (x, y))
+        screen.blit(array[4][walkCount // 8], (x, y))
         walkCount += 2
     else:
-        screen.blit(player_not_moving[walkCount // 8], (x, y))
+        screen.blit(array[3][walkCount // 8], (x, y))
         walkCount += 2
 
 
@@ -73,6 +94,10 @@ def move_player():
         playerY += speed
 
 
+def move_enemy():
+    pass
+
+
 def change_direction(event_value):
     global direction
     global score
@@ -87,7 +112,7 @@ def change_direction(event_value):
 
 
 def render_score():
-    text = font.render("Score:"+str(score), True, (0, 0, 0))
+    text = font.render("Score:" + str(score), True, (0, 0, 0))
     screen.blit(text, (10, 10))
 
 
@@ -104,5 +129,6 @@ while isRunning:
     move_player()
     screen.fill(screen_color)
     render_score()
-    draw_player(playerX, playerY, direction)
+    draw_player_or_enemy(playerX, playerY, direction, player)
+    draw_player_or_enemy(enemyX, enemyY, direction, enemy_one)
     pygame.display.update()

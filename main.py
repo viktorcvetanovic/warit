@@ -29,7 +29,7 @@ player_not_moving = [pygame.image.load("assets/tile000.png"),
 speed = 8
 playerX = 370
 playerY = 400
-listOfDirection=[pygame.K_LEFT,pygame.K_RIGHT]
+listOfDirection = [pygame.K_LEFT, pygame.K_RIGHT]
 direction = listOfDirection[0]
 walkCount = 0
 
@@ -38,14 +38,15 @@ def move_player(x, y, dire):
     global walkCount
     if walkCount >= 32:
         walkCount = 0
-    if dire == 1:
+    if dire == pygame.K_RIGHT:
         screen.blit(player_right_image[walkCount // 8], (x, y))
         walkCount += 2
-    elif dire == 2:
+    elif dire == pygame.K_LEFT:
         screen.blit(player_left_image[walkCount // 8], (x, y))
         walkCount += 2
-    elif dire == 0:
+    else:
         screen.blit(player_not_moving[walkCount // 8], (x, y))
+        walkCount += 1
 
 
 isRunning = True
@@ -56,15 +57,17 @@ while isRunning:
             isRunning = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                playerX -= speed
-                direction = 2
+                direction = listOfDirection[0]
             elif event.key == pygame.K_RIGHT:
-                playerX += speed
-                direction = 1
+                direction = listOfDirection[1]
             elif event.key == pygame.K_UP:
                 pass
         else:
-            direction=0
+            direction = 0
+    if direction == pygame.K_RIGHT:
+        playerX += speed
+    elif direction == pygame.K_LEFT:
+        playerX -= speed
 
     screen.fill(screen_color)
     move_player(playerX, playerY, direction)

@@ -34,7 +34,7 @@ direction = listOfDirection[0]
 walkCount = 0
 
 
-def move_player(x, y, dire):
+def draw_player(x, y, dire):
     global walkCount
     if walkCount >= 32:
         walkCount = 0
@@ -47,6 +47,15 @@ def move_player(x, y, dire):
     else:
         screen.blit(player_not_moving[walkCount // 8], (x, y))
         walkCount += 1
+
+
+def move_player():
+    global playerX
+    global playerY
+    if direction == pygame.K_RIGHT:
+        playerX += speed
+    elif direction == pygame.K_LEFT:
+        playerX -= speed
 
 
 isRunning = True
@@ -64,11 +73,7 @@ while isRunning:
                 pass
         else:
             direction = 0
-    if direction == pygame.K_RIGHT:
-        playerX += speed
-    elif direction == pygame.K_LEFT:
-        playerX -= speed
-
+    move_player()
     screen.fill(screen_color)
-    move_player(playerX, playerY, direction)
+    draw_player(playerX, playerY, direction)
     pygame.display.update()

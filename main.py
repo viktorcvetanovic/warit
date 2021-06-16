@@ -75,8 +75,9 @@ enemy_speed = 2
 score = 0
 playerX = 370
 playerY = 400
-enemyX = 250
-enemyY = 250
+list_of_enemy_pos = [
+    {'x': random.randint(1, 450), 'y': random.randint(1, 450), 'class': enemy_one, 'direction': pygame.K_DOWN},
+    {'x': random.randint(1, 450), 'y': random.randint(1, 450), 'class': enemy_two, 'direction': pygame.K_UP}]
 # all possible direction for player :)
 listOfDirection = [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN]
 # default is moving right
@@ -116,17 +117,16 @@ def move_player():
         playerY += speed
 
 
-def move_enemy():
-    global enemyX
-    global enemyY
-    if enemy_direction == pygame.K_RIGHT:
-        enemyX += enemy_speed
-    elif enemy_direction == pygame.K_LEFT:
-        enemyX -= enemy_speed
-    elif enemy_direction == pygame.K_UP:
-        enemyY -= enemy_speed
-    elif enemy_direction == pygame.K_DOWN:
-        enemyY += enemy_speed
+def move_enemy(i):
+    enemy = list_of_enemy_pos[i]
+    if enemy['direction'] == pygame.K_RIGHT:
+        enemy['x'] += enemy_speed
+    elif enemy['direction'] == pygame.K_LEFT:
+        enemy['x'] -= enemy_speed
+    elif enemy['direction'] == pygame.K_UP:
+        enemy['y'] -= enemy_speed
+    elif enemy['direction'] == pygame.K_DOWN:
+        enemy['y'] += enemy_speed
 
 
 def change_direction(event_value):
@@ -142,9 +142,14 @@ def change_direction(event_value):
         direction = listOfDirection[3]
 
 
-def change_enemy_direction():
-    global enemy_direction
-    enemy_direction = listOfDirection[random.randint(0, 3)]
+def call_random(func, i):
+    n = random.randint(1, 15)
+    if n == 2:
+        func(i)
+
+
+def change_enemy_direction(i):
+    list_of_enemy_pos[i]['direction'] = listOfDirection[random.randint(0, 3)]
 
 
 def render_score():
@@ -160,14 +165,16 @@ while isRunning:
             isRunning = False
         if event.type == pygame.KEYDOWN:
             change_direction(event.key)
-            change_enemy_direction()
         else:
             direction = 0
     move_player()
-    move_enemy()
+
     screen.fill(screen_color)
     render_score()
     draw_player_or_enemy(playerX, playerY, direction, player)
-    draw_player_or_enemy(enemyX, enemyY, enemy_direction, enemy_one)
-    draw_player_or_enemy(enemyX+100, enemyY+80, enemy_direction, enemy_two)
+    for i in range(0, len(list_of_enemy_pos)):
+        move_enemy(i)
+        draw_player_or_enemy(list_of_enemy_pos[i]['x'], list_of_enemy_pos[i]['y'], enemy_direction,
+                             list_of_enemy_pos[i]['class'])
+        call_random(change_enemy_direction, i)
     pygame.display.update()

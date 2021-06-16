@@ -69,6 +69,24 @@ enemy_two = {
         pygame.image.load("assets/enemy_two/tile014.png"),
         pygame.image.load("assets/enemy_two/tile015.png")]
 }
+enemy_three = {
+    1: [pygame.image.load("assets/enemy_three/tile008.png"),
+        pygame.image.load("assets/enemy_three/tile009.png"),
+        pygame.image.load("assets/enemy_three/tile010.png"),
+        pygame.image.load("assets/enemy_three/tile011.png")],
+    2: [pygame.image.load("assets/enemy_three/tile004.png"),
+        pygame.image.load("assets/enemy_three/tile005.png"),
+        pygame.image.load("assets/enemy_three/tile006.png"),
+        pygame.image.load("assets/enemy_three/tile007.png")],
+    3: [pygame.image.load("assets/enemy_three/tile000.png"),
+        pygame.image.load("assets/enemy_three/tile001.png"),
+        pygame.image.load("assets/enemy_three/tile002.png"),
+        pygame.image.load("assets/enemy_three/tile003.png")],
+    4: [pygame.image.load("assets/enemy_three/tile012.png"),
+        pygame.image.load("assets/enemy_three/tile013.png"),
+        pygame.image.load("assets/enemy_three/tile014.png"),
+        pygame.image.load("assets/enemy_three/tile015.png")]
+}
 # speed and position of player
 speed = 8
 enemy_speed = 2
@@ -78,7 +96,10 @@ playerY = 400
 list_of_enemy_pos = [
     {'x': random.randint(1, 450), 'y': random.randint(1, 450), 'class': enemy_one, 'direction': pygame.K_DOWN},
     {'x': random.randint(1, 450), 'y': random.randint(1, 450), 'class': enemy_two, 'direction': pygame.K_UP},
-    {'x': random.randint(1, 450), 'y': random.randint(1, 450), 'class': enemy_two, 'direction': pygame.K_UP}]
+    {'x': random.randint(1, 450), 'y': random.randint(1, 450), 'class': enemy_two, 'direction': pygame.K_UP},
+    {'x': random.randint(1, 450), 'y': random.randint(1, 450), 'class': enemy_three, 'direction': pygame.K_UP},
+    {'x': random.randint(1, 450), 'y': random.randint(1, 450), 'class': enemy_three, 'direction': pygame.K_UP},
+    {'x': random.randint(1, 450), 'y': random.randint(1, 450), 'class': enemy_three, 'direction': pygame.K_UP}]
 # all possible direction for player :)
 listOfDirection = [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN]
 # default is moving right
@@ -111,7 +132,7 @@ def throw_spell(dire, x, y):
 
 def check_if_dead():
     for i in range(0, len(list_of_enemy_pos)):
-        if playerX - list_of_enemy_pos[i]['x'] < 10 and playerY - list_of_enemy_pos[i]['y'] < 10:
+        if 0 < playerX - list_of_enemy_pos[i]['x'] < 20 and 0 < playerY - list_of_enemy_pos[i]['y'] < 20:
             return True
     return False
 
@@ -127,7 +148,6 @@ def move_player():
         playerY -= speed
     elif direction == pygame.K_DOWN:
         playerY += speed
-    print(playerX, playerY)
 
 
 def move_enemy(i):
@@ -172,7 +192,7 @@ def render_score():
 
 isRunning = True
 while isRunning:
-    clock.tick(25)
+    clock.tick(len(list_of_enemy_pos) * 3)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             isRunning = False

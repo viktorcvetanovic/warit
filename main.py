@@ -2,9 +2,9 @@ import pygame
 
 pygame.init()
 
+# config for screen
 size = width, height = 800, 500
 screen_color = a, b, c = 255, 255, 255
-# config for screen#
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Ratnik doline")
 icon = pygame.image.load("assets/icon.png")
@@ -13,7 +13,7 @@ pygame.display.update()
 pygame.display.set_icon(icon)
 
 #################################
-# player#
+# player images of different position
 player_right_image = [pygame.image.load("assets/tile008.png"),
                       pygame.image.load("assets/tile009.png"),
                       pygame.image.load("assets/tile010.png"),
@@ -30,10 +30,13 @@ player_is_jumping = [pygame.image.load("assets/tile012.png"),
                      pygame.image.load("assets/tile013.png"),
                      pygame.image.load("assets/tile014.png"),
                      pygame.image.load("assets/tile015.png")]
+# speed and position of player
 speed = 8
 playerX = 370
 playerY = 400
+# all possible direction for player :)
 listOfDirection = [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN]
+# default is moving right
 direction = listOfDirection[0]
 walkCount = 0
 
@@ -54,7 +57,6 @@ def draw_player(x, y, dire):
     else:
         screen.blit(player_not_moving[walkCount // 8], (x, y))
         walkCount += 2
-
 
 
 def move_player():

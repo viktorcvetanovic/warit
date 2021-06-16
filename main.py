@@ -58,6 +58,16 @@ def move_player():
         playerX -= speed
 
 
+def change_direction(event_value):
+    global direction
+    if event_value == pygame.K_LEFT:
+        direction = listOfDirection[0]
+    elif event_value == pygame.K_RIGHT:
+        direction = listOfDirection[1]
+    elif event_value == pygame.K_UP:
+        pass
+
+
 isRunning = True
 while isRunning:
     clock.tick(27)
@@ -65,12 +75,7 @@ while isRunning:
         if event.type == pygame.QUIT:
             isRunning = False
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                direction = listOfDirection[0]
-            elif event.key == pygame.K_RIGHT:
-                direction = listOfDirection[1]
-            elif event.key == pygame.K_UP:
-                pass
+            change_direction(event.key)
         else:
             direction = 0
     move_player()

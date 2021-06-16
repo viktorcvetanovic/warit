@@ -174,7 +174,7 @@ while isRunning:
     draw_player_or_enemy(playerX, playerY, direction, player)
     for i in range(0, len(list_of_enemy_pos)):
         move_enemy(i)
-        draw_player_or_enemy(list_of_enemy_pos[i]['x'], list_of_enemy_pos[i]['y'], enemy_direction,
+        draw_player_or_enemy(list_of_enemy_pos[i]['x'], list_of_enemy_pos[i]['y'], list_of_enemy_pos[i]['direction'],
                              list_of_enemy_pos[i]['class'])
         call_random(change_enemy_direction, i)
     pygame.display.update()

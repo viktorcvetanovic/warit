@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 pygame.init()
@@ -49,8 +51,27 @@ enemy_one = {
         pygame.image.load("assets/enemy/tile014.png"),
         pygame.image.load("assets/enemy/tile015.png")]
 }
+enemy_two = {
+    1: [pygame.image.load("assets/enemy_two/tile008.png"),
+        pygame.image.load("assets/enemy_two/tile009.png"),
+        pygame.image.load("assets/enemy_two/tile010.png"),
+        pygame.image.load("assets/enemy_two/tile011.png")],
+    2: [pygame.image.load("assets/enemy_two/tile004.png"),
+        pygame.image.load("assets/enemy_two/tile005.png"),
+        pygame.image.load("assets/enemy_two/tile006.png"),
+        pygame.image.load("assets/enemy_two/tile007.png")],
+    3: [pygame.image.load("assets/enemy_two/tile000.png"),
+        pygame.image.load("assets/enemy_two/tile001.png"),
+        pygame.image.load("assets/enemy_two/tile002.png"),
+        pygame.image.load("assets/enemy_two/tile003.png")],
+    4: [pygame.image.load("assets/enemy_two/tile012.png"),
+        pygame.image.load("assets/enemy_two/tile013.png"),
+        pygame.image.load("assets/enemy_two/tile014.png"),
+        pygame.image.load("assets/enemy_two/tile015.png")]
+}
 # speed and position of player
 speed = 8
+enemy_speed = 2
 score = 0
 playerX = 370
 playerY = 400
@@ -60,6 +81,7 @@ enemyY = 250
 listOfDirection = [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN]
 # default is moving right
 direction = listOfDirection[0]
+enemy_direction = listOfDirection[random.randint(0, 3)]
 walkCount = 0
 
 
@@ -95,7 +117,16 @@ def move_player():
 
 
 def move_enemy():
-    pass
+    global enemyX
+    global enemyY
+    if enemy_direction == pygame.K_RIGHT:
+        enemyX += enemy_speed
+    elif enemy_direction == pygame.K_LEFT:
+        enemyX -= enemy_speed
+    elif enemy_direction == pygame.K_UP:
+        enemyY -= enemy_speed
+    elif enemy_direction == pygame.K_DOWN:
+        enemyY += enemy_speed
 
 
 def change_direction(event_value):
@@ -111,6 +142,11 @@ def change_direction(event_value):
         direction = listOfDirection[3]
 
 
+def change_enemy_direction():
+    global enemy_direction
+    enemy_direction = listOfDirection[random.randint(0, 3)]
+
+
 def render_score():
     text = font.render("Score:" + str(score), True, (0, 0, 0))
     screen.blit(text, (10, 10))
@@ -124,11 +160,14 @@ while isRunning:
             isRunning = False
         if event.type == pygame.KEYDOWN:
             change_direction(event.key)
+            change_enemy_direction()
         else:
             direction = 0
     move_player()
+    move_enemy()
     screen.fill(screen_color)
     render_score()
     draw_player_or_enemy(playerX, playerY, direction, player)
-    draw_player_or_enemy(enemyX, enemyY, direction, enemy_one)
+    draw_player_or_enemy(enemyX, enemyY, enemy_direction, enemy_one)
+    draw_player_or_enemy(enemyX+100, enemyY+80, enemy_direction, enemy_two)
     pygame.display.update()

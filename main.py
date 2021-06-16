@@ -77,6 +77,7 @@ playerX = 370
 playerY = 400
 list_of_enemy_pos = [
     {'x': random.randint(1, 450), 'y': random.randint(1, 450), 'class': enemy_one, 'direction': pygame.K_DOWN},
+    {'x': random.randint(1, 450), 'y': random.randint(1, 450), 'class': enemy_two, 'direction': pygame.K_UP},
     {'x': random.randint(1, 450), 'y': random.randint(1, 450), 'class': enemy_two, 'direction': pygame.K_UP}]
 # all possible direction for player :)
 listOfDirection = [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN]
@@ -92,16 +93,27 @@ def draw_player_or_enemy(x, y, dire, array):
         walkCount = 0
     if dire == pygame.K_RIGHT:
         screen.blit(array[1][walkCount // 8], (x, y))
-        walkCount += 2
+        walkCount += 1
     elif dire == pygame.K_LEFT:
         screen.blit(array[2][walkCount // 8], (x, y))
-        walkCount += 2
+        walkCount += 1
     elif dire == pygame.K_UP:
         screen.blit(array[4][walkCount // 8], (x, y))
-        walkCount += 2
+        walkCount += 1
     else:
         screen.blit(array[3][walkCount // 8], (x, y))
-        walkCount += 2
+        walkCount += 1
+
+
+def throw_spell(dire, x, y):
+    pass
+
+
+def check_if_dead():
+    for i in range(0, len(list_of_enemy_pos)):
+        if playerX - list_of_enemy_pos[i]['x'] < 10 and playerY - list_of_enemy_pos[i]['y'] < 10:
+            return True
+    return False
 
 
 def move_player():
@@ -115,6 +127,7 @@ def move_player():
         playerY -= speed
     elif direction == pygame.K_DOWN:
         playerY += speed
+    print(playerX, playerY)
 
 
 def move_enemy(i):
@@ -159,7 +172,7 @@ def render_score():
 
 isRunning = True
 while isRunning:
-    clock.tick(32)
+    clock.tick(25)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             isRunning = False
@@ -168,7 +181,6 @@ while isRunning:
         else:
             direction = 0
     move_player()
-
     screen.fill(screen_color)
     render_score()
     draw_player_or_enemy(playerX, playerY, direction, player)
@@ -177,4 +189,6 @@ while isRunning:
         draw_player_or_enemy(list_of_enemy_pos[i]['x'], list_of_enemy_pos[i]['y'], list_of_enemy_pos[i]['direction'],
                              list_of_enemy_pos[i]['class'])
         call_random(change_enemy_direction, i)
+    if check_if_dead():
+        isRunning = False
     pygame.display.update()

@@ -1,6 +1,6 @@
-#WARIT
+# WARIT
 
-##This is python game made with library pygame.
+## This is python game made with library pygame.
 
 Its my first project in pygame so i am still learning :)
 This is a try of making 2d game with enemies and mazes
